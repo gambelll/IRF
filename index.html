@@ -268,65 +268,77 @@
     <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
     <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
   </div>
-  <script>
+ <script>
   function toggleSideMenu() {
-    const sideMenu = document.getElementById("sideMenu");
-    sideMenu.classList.toggle("open");
+    document.getElementById("sideMenu").classList.toggle("open");
   }
 
   function toggleLanguage() {
     const toggle = document.getElementById("langToggle");
     const navMenu = document.getElementById("navMenu");
     const sideMenuNav = document.querySelector(".side-menu nav");
+
     if (toggle.innerText.includes("ENG")) {
       toggle.innerText = "🌐 KO";
       navMenu.innerHTML = `
         <a href="an.html">Document</a>
         <a href="help.html">Inquiry Center</a>
       `;
-      sideMenuNav.innerHTML = navMenu.innerHTML;
     } else {
       toggle.innerText = "🌐 ENG";
       navMenu.innerHTML = `
         <a href="an.html">문서</a>
         <a href="help.html">문의센터</a>
       `;
-      sideMenuNav.innerHTML = navMenu.innerHTML;
     }
+    sideMenuNav.innerHTML = navMenu.innerHTML;
   }
 
-  const loggedInUserId = localStorage.getItem('userid') || '';
-  const rightControls = document.querySelector(".right-controls");
-  const sideMenuAuthButtons = document.querySelector(".auth-buttons");
+  /* ===========================
+     로그인 상태 처리 핵심 로직
+  ============================ */
 
-  function updateMenuForLogin() {
-    const userSpanClass = "user-id-display";
-    const existingSpan = document.querySelector("." + userSpanClass);
-    if (loggedInUserId) {
-      if (!existingSpan) {
-        const userIdSpan = document.createElement("span");
-        userIdSpan.classList.add(userSpanClass);
-        userIdSpan.textContent = `${loggedInUserId} 님`;
-        userIdSpan.style.fontWeight = "bold";
-        rightControls.insertBefore(userIdSpan, rightControls.firstChild);
+  const sideMenuAuthButtons = document.querySelector(".auth-buttons");
+  const rightControls = document.querySelector(".right-controls");
+
+  function updateAuthUI() {
+    const userid = localStorage.getItem("userid");
+    const existingUserText = document.getElementById("userText");
+
+    // 로그인 상태
+    if (userid) {
+      // 상단 우측 사용자 표시
+      if (!existingUserText) {
+        const span = document.createElement("span");
+        span.id = "userText";
+        span.textContent = `${userid} 님`;
+        span.style.fontWeight = "bold";
+        rightControls.insertBefore(span, rightControls.firstChild);
       }
+
+      // 사이드 메뉴 → 로그아웃 버튼
       sideMenuAuthButtons.innerHTML = `
-        <div style="margin-bottom: 10px; font-weight: bold;">${loggedInUserId} 님</div>
-        <button class="logout">로그아웃</button>
+        <button id="logoutBtn" style="
+          background:#dc3545;
+          color:white;
+          font-weight:bold;
+          padding:10px;
+          border:none;
+          border-radius:4px;
+          cursor:pointer;
+        ">로그아웃</button>
       `;
-      const logoutBtn = sideMenuAuthButtons.querySelector(".logout");
-      logoutBtn.style.backgroundColor = "#dc3545";
-      logoutBtn.style.color = "white";
-      logoutBtn.style.border = "none";
-      logoutBtn.style.padding = "10px";
-      logoutBtn.style.borderRadius = "4px";
-      logoutBtn.style.cursor = "pointer";
-      logoutBtn.addEventListener("click", () => {
+
+      document.getElementById("logoutBtn").onclick = () => {
         localStorage.removeItem("userid");
-        location.href = "index.html";
-      });
-    } else {
-      if (existingSpan) existingSpan.remove();
+        location.reload();
+      };
+
+    } 
+    // 로그아웃 상태
+    else {
+      if (existingUserText) existingUserText.remove();
+
       sideMenuAuthButtons.innerHTML = `
         <button class="signup" onclick="location.href='signup.html'">회원가입</button>
         <button class="login" onclick="location.href='login.html'">로그인</button>
@@ -335,31 +347,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    updateMenuForLogin();
-
-    const slides = document.getElementById("slides");
-    const slideCount = slides.querySelectorAll(".slide").length;
-    let currentSlide = 0;
-
-    function showSlide(index) {
-  const slideWidthPercent = 100 / slideCount; // 33.3333%
-  currentSlide = (index + slideCount) % slideCount;
-  slides.style.transform = `translateX(-${currentSlide * slideWidthPercent}%)`;
-}
-
-
-    document.querySelector(".slider-btn.prev").addEventListener("click", () => {
-      showSlide(currentSlide - 1);
-    });
-
-    document.querySelector(".slider-btn.next").addEventListener("click", () => {
-      showSlide(currentSlide + 1);
-    });
-
-    setInterval(() => {
-      showSlide(currentSlide + 1);
-    }, 5000);
+    updateAuthUI();
   });
-  </script>
+</script>
+
 </body>
 </html>
