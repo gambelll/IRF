@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>International Racing Federation</title>
+  <link rel="icon" href="favicon/IRF.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* 기존 스타일 유지 */
+    .form-container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 30px;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .form-container h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .form-container label {
+      font-size: 18px;
+      display: block;
+      margin: 12px 0 6px;
+    }
+    .form-container input, .form-container select, .form-container textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    .form-container textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .form-container button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background-color: #007bff;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .form-container button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>IRF 문의</h2>
+    <form id="civilForm">
+      <label for="roblox">로블록스 닉네임</label>
+      <input type="text" id="roblox" name="roblox" autocomplete="off" required>
+
+      <label for="discord">디스코드 닉네임</label>
+      <input type="text" id="discord" name="discord" autocomplete="off" required>
+
+      <label for="email">이메일 (접수 안내를 받을 이메일)</label>
+      <input type="email" id="email" name="email" autocomplete="email" required>
+
+      <label for="category">카테고리</label>
+      <select id="category" name="category" required>
+        <option value="">-- 선택하세요 --</option>
+        <option value="요청서">요청서</option>
+        <option value="버그 발견">버그 발견</option>
+      </select>
+
+      <label for="message">설명</label>
+      <textarea id="message" name="message" required></textarea>
+
+      <button type="submit">제출</button>
+    </form>
+  </div>
+<script type="module" src="form_submit.js"></script>
+
+</body>
+</html>
